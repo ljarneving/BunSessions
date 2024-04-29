@@ -23,19 +23,19 @@ const server = Bun.serve({
         // Path requested by client.
         const path = new URL(request.url).pathname
 
-        // Header for the responses
-        const header = new Header()
+        // Headers for the responses
+        const Headers = new Headers()
 
         if(path === "/") {
-            return new Response("Index", { header, status:200 })
+            return new Response("Index", { Headers, status:200 })
         }
         
         if(path === "/dashboard") { 
-            return new Response("Dashboard", { header, status:200 })
+            return new Response("Dashboard", { Headers, status:200 })
         }
  
         // Response whenever the client request a route that does not exist.
-        return new Response("404 Not Found", { header, status:200 })
+        return new Response("404 Not Found", { Headers, status:200 })
     },
   })
   
@@ -65,25 +65,25 @@ const server = Bun.serve({
         // Path requested by client.
         const path = new URL(request.url).pathname
 
-        // Header for the responses
-        const header = new Header()
+        // Headers for the responses
+        const Headers = new Headers()
 
         // Returns the active session of the client or creates a new session if no active session exits.
         const session = syncSessionsWithRequest(request)
 
         // To send a cookie to the client with the session id - use the cookie property of the session instance.
-        header.append("Set-Cookie", session.cookie)
+        Headers.append("Set-Cookie", session.cookie)
 
         if(path === "/") {
-            return new Response("Index", { header, status:200 })
+            return new Response("Index", { Headers, status:200 })
         }
         
         if(path === "/dashboard") { 
-            return new Response("Dashboard", { header, status:200 })
+            return new Response("Dashboard", { Headers, status:200 })
         }
  
         // Response whenever the client request a route that does not exist.
-        return new Response("404 Not Found", { header, status:200 })
+        return new Response("404 Not Found", { Headers, status:200 })
     },
   })
   
@@ -121,17 +121,17 @@ const server = Bun.serve({
         // Path requested by client.
         const path = new URL(request.url).pathname
 
-        // Header for the responses
-        const header = new Header()
+        // Headers for the responses
+        const Headers = new Headers()
 
         // Returns the active session of the client or creates a new session if no active session exits.
         const session = syncSessionsWithRequest(request)
 
         // To send a cookie to the client with the session id - use the cookie property of the session instance.
-        header.append("Set-Cookie", session.cookie)
+        Headers.append("Set-Cookie", session.cookie)
 
         if(path === "/") {
-            return new Response("Index", { header, status:200 })
+            return new Response("Index", { Headers, status:200 })
         }
 
         // Minimal example of a route for posting login credentials.
@@ -143,24 +143,24 @@ const server = Bun.serve({
             const isAuthenticated = authenticateUser(username, password)
             if(isAuthenticated) {
                 session.isLoggedIn = true
-                return new Response("true", { header, status:200 })
+                return new Response("true", { Headers, status:200 })
             }
-            return new Response("false", { header, status:401 })
+            return new Response("false", { Headers, status:401 })
         }
 
         // Minimal example of a route for posting a logout request.
         if(path === "/logout" && method === "POST") {
             session.isLoggedIn = false
-            return new Response("logged out", { header, status:204 } )
+            return new Response("logged out", { Headers, status:204 } )
         }
 
         // The dashboard route is now restricted but accessible if the client session is authenticated.
         if(path === "/dashboard" && session.isLoggedIn) { 
-            return new Response("Dashboard", { header, status: 200 })
+            return new Response("Dashboard", { Headers, status: 200 })
         }
  
         // Response whenever the client request a route that does not exist.
-        return new Response("404 Not Found", { header, status: 404 })
+        return new Response("404 Not Found", { Headers, status: 404 })
     },
   })
   
