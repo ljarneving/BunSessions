@@ -72,7 +72,7 @@ const server = Bun.serve({
         const session = syncSessionsWithRequest(request)
 
         // To send a cookie to the client with the session id - use the cookie property of the session instance.
-        Headers.append("Set-Cookie", session.cookie)
+        headers.append("Set-Cookie", session.cookie)
 
         if(path === "/") {
             return new Response("Index", { headers, status:200 })
