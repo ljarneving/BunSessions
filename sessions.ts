@@ -26,7 +26,7 @@ class Session {
     constructor() {
         this.id = "" + Bun.hash(`Create session ${sessions.size}`)
         this.isLoggedIn = false 
-        this.cookie = `id=${this.id}; Max-Age:${MAX_AGE}; SameSite=Strict`
+        this.cookie = `id=${this.id}; Max-Age:${MAX_AGE}; SameSite=Strict; HttpOnly`
         
         // Removes the session from sessions when the cookie expires.
         setTimeout(() => {
