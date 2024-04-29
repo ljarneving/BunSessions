@@ -24,18 +24,18 @@ const server = Bun.serve({
         const path = new URL(request.url).pathname
 
         // Headers for the responses
-        const Headers = new Headers()
+        const headers = new Headers()
 
         if(path === "/") {
-            return new Response("Index", { Headers, status:200 })
+            return new Response("Index", { headers, status:200 })
         }
         
         if(path === "/dashboard") { 
-            return new Response("Dashboard", { Headers, status:200 })
+            return new Response("Dashboard", { headers, status:200 })
         }
  
         // Response whenever the client request a route that does not exist.
-        return new Response("404 Not Found", { Headers, status:200 })
+        return new Response("404 Not Found", { headers, status:200 })
     },
   })
   
@@ -66,7 +66,7 @@ const server = Bun.serve({
         const path = new URL(request.url).pathname
 
         // Headers for the responses
-        const Headers = new Headers()
+        const headers = new Headers()
 
         // Returns the active session of the client or creates a new session if no active session exits.
         const session = syncSessionsWithRequest(request)
@@ -75,15 +75,15 @@ const server = Bun.serve({
         Headers.append("Set-Cookie", session.cookie)
 
         if(path === "/") {
-            return new Response("Index", { Headers, status:200 })
+            return new Response("Index", { headers, status:200 })
         }
         
         if(path === "/dashboard") { 
-            return new Response("Dashboard", { Headers, status:200 })
+            return new Response("Dashboard", { headers, status:200 })
         }
  
         // Response whenever the client request a route that does not exist.
-        return new Response("404 Not Found", { Headers, status:200 })
+        return new Response("404 Not Found", { headers, status:200 })
     },
   })
   
@@ -122,16 +122,16 @@ const server = Bun.serve({
         const path = new URL(request.url).pathname
 
         // Headers for the responses
-        const Headers = new Headers()
+        const headers = new Headers()
 
         // Returns the active session of the client or creates a new session if no active session exits.
         const session = syncSessionsWithRequest(request)
 
         // To send a cookie to the client with the session id - use the cookie property of the session instance.
-        Headers.append("Set-Cookie", session.cookie)
+        headers.append("Set-Cookie", session.cookie)
 
         if(path === "/") {
-            return new Response("Index", { Headers, status:200 })
+            return new Response("Index", { headers, status:200 })
         }
 
         // Minimal example of a route for posting login credentials.
@@ -143,24 +143,24 @@ const server = Bun.serve({
             const isAuthenticated = authenticateUser(username, password)
             if(isAuthenticated) {
                 session.isLoggedIn = true
-                return new Response("true", { Headers, status:200 })
+                return new Response("true", { headers, status:200 })
             }
-            return new Response("false", { Headers, status:401 })
+            return new Response("false", { headers, status:401 })
         }
 
         // Minimal example of a route for posting a logout request.
         if(path === "/logout" && method === "POST") {
             session.isLoggedIn = false
-            return new Response("logged out", { Headers, status:204 } )
+            return new Response("logged out", { headers, status:204 } )
         }
 
         // The dashboard route is now restricted but accessible if the client session is authenticated.
         if(path === "/dashboard" && session.isLoggedIn) { 
-            return new Response("Dashboard", { Headers, status: 200 })
+            return new Response("Dashboard", { headers, status: 200 })
         }
  
         // Response whenever the client request a route that does not exist.
-        return new Response("404 Not Found", { Headers, status: 404 })
+        return new Response("404 Not Found", { headers, status: 404 })
     },
   })
   
