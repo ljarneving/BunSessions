@@ -1,5 +1,5 @@
 ## Example
-`typescript
+``typescript
 
 const server = Bun.serve({
     async fetch(req) {
@@ -57,4 +57,4 @@ const server = Bun.serve({
 })
 
 console.log(`Server listening to http://localhost:${server.port}`)
-`
+``
