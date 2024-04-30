@@ -1,6 +1,10 @@
 ## Example
+The example is a minimal bank application with three routes: 
+* A landing page at route "/", containing a login form.
+* A "/login" route to post the login form to.
+* A "/account" route, containing the clients bank account.
+* A "/logout" route to which the client can post a logout request.
 ```typescript
-
 const server = Bun.serve({
     async fetch(req) {
 
