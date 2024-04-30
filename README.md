@@ -1,5 +1,5 @@
 ## Example
-``typescript
+```typescript
 
 const server = Bun.serve({
     async fetch(req) {
