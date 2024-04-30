@@ -1,3 +1,5 @@
+import getCookies from "./getCookies"
+
 // Sets the maximum age of a session in seconds.
 let MAX_AGE = 3600 // default max age.
 if(process.env.SESSION_MAX_AGE && typeof process.env.MAX_AGE === "string") {
@@ -18,7 +20,7 @@ const sessions = new Map<string, Session>()
  * 
  * The session removes itself after expiration.
  */
-class Session {
+export class Session {
     id:string
     isLoggedIn:boolean
     cookie:string
@@ -43,14 +45,18 @@ class Session {
 }
 
 export default function syncSessionsWithRequest(req:Request):Session {
-    // Extracts cookie from the request. 
-    const cookie = req.headers.get("cookie") // Returns null if there is no cookie.
-    const hasCookie = cookie !== null
 
-    // Extracts id from the cookie
-    const id = hasCookie ? cookie.split("=")[1] : ""
+    const cookies = getCookies(req)
+
+    if(!cookies) {
+        const session = new Session()
+        sessions.set(session.id, session)
+        return session        
+    }
+
+    const id = cookies[0].id
     let session = sessions.get(id) // Returns undefined when there is no session with the id.
-
+    
     if(!session) {
         session = new Session()
         sessions.set(session.id, session)
